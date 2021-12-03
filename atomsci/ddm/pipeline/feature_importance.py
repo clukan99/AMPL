@@ -8,6 +8,7 @@ import pandas as pd
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import r2_score
 import random
+import json
 
 
 from atomsci.ddm.pipeline import model_pipeline as mp
@@ -47,7 +48,7 @@ def _shuffle_columns(tempFeaturizer,j, columns, feature_list_grid):
         
     
 
-def predict_feature_importance(model_type, data_to_predict, model_path, input_df, id_col, smiles_col, response_col,featurizer_kind = None,n_cols = None):
+def predict_feature_importance(model_type, model_path, input_df, id_col, smiles_col, response_col,featurizer_kind = None,n_cols = None):
     """
     Loads a pretrained model from the model tarball file and runs predictions on feature importance by shuffling the feature  columns for given descriptors
     
@@ -56,7 +57,7 @@ def predict_feature_importance(model_type, data_to_predict, model_path, input_df
         
         featurizer_kind (str): Input of the type of featurizer that can be used (moe, moe_raw, moe_scaled, moe_norm, moe_filtered, moe_scaled_filtered, moe_informative, moe_scaled, mordred_filtered, mordred_raw, rdkit_raw)
         
-        data_to_predict (DataFrame): The descriptor file of the featurizer_kind
+ 
         
         model_path: The path to take to reach the tarball file
         
@@ -79,15 +80,24 @@ def predict_feature_importance(model_type, data_to_predict, model_path, input_df
     #Infer the featurizer kind, model type from the tarball
     #Set featurizer kind automatically
     #Check input dataframe
-    #Combine the two input definitions
+    #Combine the two input definitions (Pred_df and data_to_predict)
     
     #***************************************
-    tempFeaturizer = data_to_predict.copy()
+    tempFeaturizer = input_df.copy()
     columns = list(tempFeaturizer.columns)
     
     feature_list_grid = []
     r2_list_grid = []
     auc_roc_list_grid = []
+    #***************************************
+    
+    #***************************************
+    #finding the featurizing kind here
+    #file_path =
+    #file = open
+    #featurizer_kind =
+    
+    
     #***************************************
     
     
@@ -121,7 +131,7 @@ def predict_feature_importance(model_type, data_to_predict, model_path, input_df
         tempFeaturizer = _shuffle_columns(tempFeaturizer, j, columns,feature_list_grid)
         pred_df = pfm.predict_from_model_file(model_path=model_path, input_df = tempFeaturizer, id_col = id_col, smiles_col = smiles_col, response_col = response_col, is_featurized=True)
         _making_dataframe(model_type, pred_df, auc_roc_list_grid, r2_list_grid,response_col)
-        tempFeaturizer = data_to_predict.copy()
+        tempFeaturizer = input_df.copy()
         ##The temp featurizer is reset when it copies the initial dataset.
         print(f'Finished testing feature {i}/{numberOfColumns}')
         i+=1
