@@ -45,8 +45,8 @@ def _shuffle_columns(tempFeaturizer,j, columns, feature_list_grid):
     feature_list_grid.append(temp_feature)
     return tempFeaturizer
 #***************************************
-        
-    
+
+#def predict_feature_importance(model_path, input_df, id_col, smiles_col, response_col,n_cols = None):
 
 def predict_feature_importance(model_type, model_path, input_df, id_col, smiles_col, response_col,featurizer_kind = None,n_cols = None):
     """
@@ -150,5 +150,3 @@ def predict_feature_importance(model_type, model_path, input_df, id_col, smiles_
     #***************************************
 
 
-        
-        
